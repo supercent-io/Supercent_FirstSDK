@@ -230,14 +230,14 @@ namespace Supercent.Edit
 
                 using (new EditorGUILayout.HorizontalScope())
                 {
-                    if (GUILayout.Button("Validate Facebook Settings", GUILayout.Height(26)))
-                    {
-                        ValidateFacebookSettings(facebookSettings);
-                    }
-
                     if (GUILayout.Button("Save Facebook Settings", GUILayout.Height(26)))
                     {
                         SaveFacebookSettings();
+                    }
+
+                    if (GUILayout.Button("Validate Facebook Settings", GUILayout.Height(26)))
+                    {
+                        ValidateFacebookSettings(facebookSettings);
                     }
                 }
             }
@@ -311,14 +311,14 @@ namespace Supercent.Edit
 
                 using (new EditorGUILayout.HorizontalScope())
                 {
-                    if (GUILayout.Button("Validate GameAnalytics Settings", GUILayout.Height(26)))
-                    {
-                        ValidateGameAnalyticsSettings(gameAnalyticsSettings);
-                    }
-
                     if (GUILayout.Button("Save GameAnalytics Settings", GUILayout.Height(26)))
                     {
                         SaveGameAnalyticsSettings();
+                    }
+                    
+                    if (GUILayout.Button("Validate GameAnalytics Settings", GUILayout.Height(26)))
+                    {
+                        ValidateGameAnalyticsSettings(gameAnalyticsSettings);
                     }
                 }
             }
