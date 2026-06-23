@@ -65,9 +65,30 @@ Window/GameAnalytics/Select Settings
 - Asset paths are displayed as read-only `LabelField` text.
 - There is no separate original-file select button.
 - Validation buttons call `SettingsValidationHelper`.
+- Editable values are staged locally in the EditorWindow and are not written to assets until Save is clicked.
+- Fields with unsaved local changes are displayed with a bold highlighted label.
+- Save and Validate buttons are ordered as Validate on the left and Save on the right.
+- `Reload Settings Assets` discards all staged local changes and reloads the latest asset values.
 - If a settings asset is missing, the section shows a `Find ... Settings File` button.
 - The find button opens the plugin-provided settings menu instead of creating assets directly.
 - If the plugin settings menu cannot be executed, the UI shows a module-not-found dialog.
+
+
+## Draft editing flow
+
+The EditorWindow no longer writes field edits directly into `SerializedObject` during `OnGUI`.
+
+Current behavior:
+
+1. If a field has no local draft value, it displays the current value from the asset every GUI refresh.
+2. When the user edits a field, the new value is stored in an EditorWindow-local draft dictionary.
+3. The asset is not marked dirty and `SerializedObject.ApplyModifiedProperties()` is not called for normal text edits.
+4. Dirty fields are identified by comparing the draft value with the current asset value.
+5. Dirty fields are displayed with a bold highlighted label.
+6. Clicking Save applies only the staged values to the corresponding asset.
+7. Clicking Reload clears all staged draft values and reloads the latest asset references.
+
+Validation buttons continue to validate saved asset data through `SettingsValidationHelper`. Unsaved draft values are only included after Save is clicked.
 
 ## Missing settings asset flow
 
