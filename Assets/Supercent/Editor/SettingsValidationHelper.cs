@@ -40,8 +40,8 @@ namespace Supercent.Edit
 
         // Configure these project-wide values before running build validation.
         // Example: FirstStepValidateApiDomain = "https://api.example.com";
-        public static string FirstStepValidateApiDomain = "https://cpi-dev-backend.supercent.net";
-        public static string FirstStepValidateApiKey = "eceed79e3ec1cd3ffe0a83329a621c7157d5b7c3b24fafa2";
+        public static string FirstStepValidateApiDomain = "";
+        public static string FirstStepValidateApiKey = "";
         public static int FirstStepValidateApiTimeoutSeconds = 15;
 
         private const string FacebookSettingsTypeName = "Facebook.Unity.Settings.FacebookSettings";
@@ -621,11 +621,14 @@ namespace Supercent.Edit
             if (result.IsValid)
             {
                 Debug.Log("[First Stage Settings] " + message);
-                EditorUtility.DisplayDialog(dialogTitle, message, "OK");
             }
             else
             {
                 Debug.LogError("[First Stage Settings] " + message);
+            }
+
+            if (!Application.isBatchMode)
+            {
                 EditorUtility.DisplayDialog(dialogTitle, message, "OK");
             }
         }

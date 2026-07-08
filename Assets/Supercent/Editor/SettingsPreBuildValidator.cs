@@ -41,6 +41,11 @@ namespace Supercent.Edit
                 return;
             }
 
+            SettingsValidationHelper.ShowResultDialog(
+                "First Stage Settings Pre-Build Validation",
+                result
+            );
+
             string message = result.ToBuildFailureMessage();
             Debug.LogError(message);
             throw new BuildFailedException(message);

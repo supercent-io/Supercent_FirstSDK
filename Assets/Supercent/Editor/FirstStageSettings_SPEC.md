@@ -185,7 +185,18 @@ Before the build starts, it calls:
 SettingsValidationHelper.ValidateAllAndWait(...)
 ```
 
-If the result contains errors, it throws:
+If the result contains errors, it first displays the detailed validation result through:
+
+```csharp
+SettingsValidationHelper.ShowResultDialog(
+    "First Stage Settings Pre-Build Validation",
+    result
+);
+```
+
+The dialog contains the same detail as the editor validation buttons, including failed `checks` values and each remote API `errors` item when `data.status == "attention"`. In Unity batch mode the dialog is skipped so CI/build automation does not block.
+
+After the dialog/log output, it throws:
 
 ```csharp
 BuildFailedException
