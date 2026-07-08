@@ -1,5 +1,5 @@
-# Supercent_FirstSDK
-
+#Welcome to the Supercent FirstSDK.
+Please follow the guide below to integrate the SDK.
 
 ## Installing the FirstStage Module
 Download the released FirstStage.unitypackage.
