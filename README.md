@@ -1,4 +1,4 @@
-#Welcome to the Supercent FirstSDK.
+# Welcome to the Supercent FirstSDK.
 Please follow the guide below to integrate the SDK.
 
 ## Installing the FirstStage Module
