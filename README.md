@@ -6,7 +6,7 @@ Download the released FirstStage.unitypackage.
 
 Import the package into your target Unity project.
 
-!<img src="./blob/main/GUIDE/import_01.png"/>
+!<img src="./refs/heads/main/GUIDE/import_01.png"/>
 
 !GUIDE/import_02.png
 
