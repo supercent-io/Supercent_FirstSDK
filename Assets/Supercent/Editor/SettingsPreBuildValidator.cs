@@ -14,11 +14,17 @@ namespace Supercent.Edit
 
         public void OnPreprocessBuild(BuildReport report)
         {
+            bool isFirstStepMobileBuildTarget =
+                SettingsValidationHelper.IsFirstStepMobileBuildTarget(report.summary.platform);
+
             var options = new SettingsValidationHelper.ValidationOptions
             {
                 ValidateFacebook = true,
                 ValidateGameAnalytics = true,
+                ValidatePlayerBuildSettings = isFirstStepMobileBuildTarget,
+                ValidateFirstStepApi = isFirstStepMobileBuildTarget,
                 GameAnalyticsMode = SettingsValidationHelper.GameAnalyticsPlatformValidationMode.BuildTargetOnly,
+                FirstStepEndpoint = SettingsValidationHelper.FirstStepApiEndpoint.BuildRegister,
                 BuildTarget = report.summary.platform
             };
 

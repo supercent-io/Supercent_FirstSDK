@@ -128,6 +128,8 @@ namespace Supercent.Edit
             DrawGameAnalyticsSettings();
 
             EditorGUILayout.EndScrollView();
+
+            DrawBuildValidationButtons();
         }
 
         void ReloadAssets()
@@ -234,11 +236,6 @@ namespace Supercent.Edit
                     {
                         SaveFacebookSettings();
                     }
-
-                    if (GUILayout.Button("Validate Facebook Settings", GUILayout.Height(26)))
-                    {
-                        ValidateFacebookSettings(facebookSettings);
-                    }
                 }
             }
         }
@@ -315,10 +312,40 @@ namespace Supercent.Edit
                     {
                         SaveGameAnalyticsSettings();
                     }
-                    
-                    if (GUILayout.Button("Validate GameAnalytics Settings", GUILayout.Height(26)))
+                }
+            }
+        }
+
+        private void DrawBuildValidationButtons()
+        {
+            EditorGUILayout.Space(8);
+
+            using (new EditorGUILayout.VerticalScope("box"))
+            {
+                EditorGUILayout.LabelField("Build Settings Validation", EditorStyles.boldLabel);
+                EditorGUILayout.HelpBox(
+                    "Validates Facebook settings, GameAnalytics, Player build settings, and the FirstStep validation API separately for Google(Android) and iOS builds. Android reads the actual AndroidManifest; iOS uses FacebookSettings.asset before build.",
+                    MessageType.Info
+                );
+
+                using (new EditorGUILayout.HorizontalScope())
+                {
+                    if (GUILayout.Button("Validate Google Build Settings", GUILayout.Height(30)))
                     {
-                        ValidateGameAnalyticsSettings(gameAnalyticsSettings);
+                        ValidateBuildSettings(
+                            BuildTarget.Android,
+                            "Google Build Settings Validation",
+                            "Validating Google Build Settings"
+                        );
+                    }
+
+                    if (GUILayout.Button("Validate iOS Build Settings", GUILayout.Height(30)))
+                    {
+                        ValidateBuildSettings(
+                            BuildTarget.iOS,
+                            "iOS Build Settings Validation",
+                            "Validating iOS Build Settings"
+                        );
                     }
                 }
             }
@@ -790,34 +817,32 @@ namespace Supercent.Edit
             );
         }
 
-        static void ValidateFacebookSettings(UnityObject settings)
+        private void ValidateBuildSettings(
+            BuildTarget buildTarget,
+            string dialogTitle,
+            string progressTitle)
         {
-            var result = SettingsValidationHelper.ValidateFacebookAndWait(
-                settings,
-                "Validating Facebook Settings",
-                true
-            );
+            var options = new SettingsValidationHelper.ValidationOptions
+            {
+                FacebookSettings = facebookSettings,
+                GameAnalyticsSettings = gameAnalyticsSettings,
+                ValidateFacebook = true,
+                ValidateGameAnalytics = true,
+                ValidatePlayerBuildSettings = true,
+                ValidateFirstStepApi = true,
+                GameAnalyticsMode = SettingsValidationHelper.GameAnalyticsPlatformValidationMode.BuildTargetOnly,
+                FirstStepEndpoint = SettingsValidationHelper.FirstStepApiEndpoint.Validate,
+                BuildTarget = buildTarget
+            };
 
-            SettingsValidationHelper.ShowResultDialog(
-                "Facebook Settings Validation",
-                result
-            );
-        }
+            SettingsValidationHelper.ValidationResult result =
+                SettingsValidationHelper.ValidateAllAndWait(
+                    options,
+                    progressTitle,
+                    true
+                );
 
-        static void ValidateGameAnalyticsSettings(UnityObject settings)
-        {
-            var result = SettingsValidationHelper.ValidateGameAnalyticsAndWait(
-                settings,
-                SettingsValidationHelper.GameAnalyticsPlatformValidationMode.AllMobilePlatforms,
-                null,
-                "Validating GameAnalytics Settings",
-                true
-            );
-
-            SettingsValidationHelper.ShowResultDialog(
-                "GameAnalytics Settings Validation",
-                result
-            );
+            SettingsValidationHelper.ShowResultDialog(dialogTitle, result);
         }
 
         static bool EnsureStringArraySize(
