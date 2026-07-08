@@ -39,4 +39,5 @@ Please call the initialization code below at an appropriate time before the game
 
 ## Finalizing Integration Registration
 The module integration is finalized and transmitted during the app build process.
+
 Please make sure to proceed all the way through to the build stage.
